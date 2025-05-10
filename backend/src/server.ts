@@ -4,7 +4,6 @@ import { Server } from 'socket.io';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import mongoose from 'mongoose';
-import jobRoutes from './routes/jobs';
 
 // Load environment variables
 dotenv.config();
@@ -24,19 +23,9 @@ app.use(cors());
 app.use(express.json());
 
 // Database connection
-mongoose.connect(process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/freelance-marketplace')
-  .then(() => {
-    console.log('Connected to MongoDB');
-    console.log('Database:', mongoose.connection.db.databaseName);
-    console.log('Collections:', Object.keys(mongoose.connection.collections));
-  })
-  .catch((err) => {
-    console.error('MongoDB connection error:', err);
-    console.error('Connection string:', process.env.MONGODB_URI);
-  });
-
-// Routes
-app.use('/api/jobs', jobRoutes);
+mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/freelance-marketplace')
+  .then(() => console.log('Connected to MongoDB'))
+  .catch((err) => console.error('MongoDB connection error:', err));
 
 // Socket.IO connection handling
 io.on('connection', (socket: any) => {
@@ -66,6 +55,4 @@ app.get('/', (_req, res) => {
 const PORT = process.env.PORT || 3001;
 httpServer.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
-});
-
-export default app; 
+}); 
