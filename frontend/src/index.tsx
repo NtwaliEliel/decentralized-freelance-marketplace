@@ -1,12 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { Web3ReactProvider } from '@web3-react/core';
-import { JsonRpcProvider } from 'ethers';
+import { ethers } from 'ethers';
 import App from './App';
 import './index.css';
 
 function getLibrary(provider: any) {
-  return new JsonRpcProvider(provider);
+  return new ethers.providers.Web3Provider(provider);
 }
 
 const root = ReactDOM.createRoot(

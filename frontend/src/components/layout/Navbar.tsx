@@ -83,6 +83,18 @@ const Navbar: React.FC = () => {
             )}
             {!active ? (
               <div className="flex space-x-4">
+                <Link
+                  to="/register"
+                  className="text-gray-900 dark:text-gray-100 hover:text-primary-600 dark:hover:text-primary-400 px-3 py-2 rounded-md text-sm font-medium"
+                >
+                  Register
+                </Link>
+                <Link
+                  to="/login"
+                  className="text-gray-900 dark:text-gray-100 hover:text-primary-600 dark:hover:text-primary-400 px-3 py-2 rounded-md text-sm font-medium"
+                >
+                  Login
+                </Link>
                 <button
                   onClick={() => connectWallet(injected)}
                   className="bg-primary-600 hover:bg-primary-700 text-white px-4 py-2 rounded-md text-sm font-medium"
@@ -98,9 +110,12 @@ const Navbar: React.FC = () => {
               </div>
             ) : (
               <div className="flex items-center space-x-4">
-                <span className="text-gray-900 dark:text-gray-100">
+                <Link
+                  to={`/profile/${account}`}
+                  className="text-gray-900 dark:text-gray-100 hover:text-primary-600 dark:hover:text-primary-400"
+                >
                   {account?.slice(0, 6)}...{account?.slice(-4)}
-                </span>
+                </Link>
                 <button
                   onClick={handleDisconnect}
                   className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-md text-sm font-medium"

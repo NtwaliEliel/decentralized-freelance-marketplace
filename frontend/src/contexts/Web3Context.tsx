@@ -18,9 +18,9 @@ const Web3Context = createContext<Web3ContextType>({
   contractError: null,
 });
 
-// Contract addresses - replace with your deployed contract addresses
-const JOB_CONTRACT_ADDRESS = process.env.REACT_APP_JOB_CONTRACT_ADDRESS || '';
-const USER_PROFILE_CONTRACT_ADDRESS = process.env.REACT_APP_USER_PROFILE_CONTRACT_ADDRESS || '';
+// Contract addresses from local deployment
+const JOB_CONTRACT_ADDRESS = '0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512';
+const USER_PROFILE_CONTRACT_ADDRESS = '0x5FbDB2315678afecb367f032d93F642f64180aa3';
 
 export const Web3Provider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const { library, account, chainId } = useWeb3React();

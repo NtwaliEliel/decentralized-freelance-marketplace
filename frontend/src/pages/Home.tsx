@@ -15,6 +15,12 @@ const Home: React.FC = () => {
         </p>
         <div className="space-x-4">
           <Link
+            to="/register"
+            className="bg-white text-primary-600 px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition"
+          >
+            Register
+          </Link>
+          <Link
             to="/jobs"
             className="bg-white text-primary-600 px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition"
           >

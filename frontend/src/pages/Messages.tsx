@@ -12,7 +12,7 @@ interface Message {
 
 const Messages: React.FC = () => {
   const { jobId } = useParams<{ jobId: string }>();
-  const { account } = useWallet();
+  const { address } = useWallet();
   const [messages, setMessages] = useState<Message[]>([]);
   const [newMessage, setNewMessage] = useState('');
   const [loading, setLoading] = useState(true);
@@ -20,10 +20,10 @@ const Messages: React.FC = () => {
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (account) {
+    if (address) {
       // Connect to WebSocket server
       socketRef.current = io(process.env.REACT_APP_WS_URL || 'http://localhost:3001', {
-        query: { address: account },
+        query: { address: address },
       });
 
       socketRef.current.on('message', (message: Message) => {
@@ -34,7 +34,7 @@ const Messages: React.FC = () => {
         socketRef.current?.disconnect();
       };
     }
-  }, [account]);
+  }, [address]);
 
   useEffect(() => {
     const fetchMessages = async () => {
@@ -55,14 +55,14 @@ const Messages: React.FC = () => {
   }, [messages]);
 
   const handleSendMessage = async () => {
-    if (!newMessage.trim() || !account) return;
+    if (!newMessage.trim() || !address) return;
 
     try {
       // TODO: Implement message sending to contract
       const message: Message = {
         id: Date.now().toString(), // Generate a unique ID
         content: newMessage,
-        sender: account,
+        sender: address,
         timestamp: new Date().toISOString(),
       };
 
@@ -94,12 +94,12 @@ const Messages: React.FC = () => {
               <div
                 key={message.id}
                 className={`flex ${
-                  message.sender === account ? 'justify-end' : 'justify-start'
+                  message.sender === address ? 'justify-end' : 'justify-start'
                 }`}
               >
                 <div
                   className={`max-w-[70%] rounded-lg p-3 ${
-                    message.sender === account
+                    message.sender === address
                       ? 'bg-blue-500 text-white'
                       : 'bg-gray-100 text-gray-800'
                   }`}
@@ -126,7 +126,7 @@ const Messages: React.FC = () => {
               />
               <button
                 onClick={handleSendMessage}
-                disabled={!account}
+                disabled={!address}
                 className="px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50"
               >
                 Send

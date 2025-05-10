@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useWeb3React } from '@web3-react/core';
+import { jobService } from '../services/api';
 
 interface JobFormData {
   title: string;
@@ -11,7 +11,6 @@ interface JobFormData {
 }
 
 const CreateJob: React.FC = () => {
-  const { account } = useWeb3React();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState<JobFormData>({
@@ -24,22 +23,14 @@ const CreateJob: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!account) {
-      alert('Please connect your wallet first');
-      return;
-    }
-
     setLoading(true);
     try {
-      // TODO: Implement job creation with smart contract
-      // const tx = await jobContract.createJob(
-      //   formData.title,
-      //   formData.description,
-      //   ethers.utils.parseEther(formData.budget),
-      //   formData.skills,
-      //   new Date(formData.deadline).getTime()
-      // );
-      // await tx.wait();
+      await jobService.createJob({
+        ...formData,
+        budget: parseFloat(formData.budget),
+        client: 'demo-client', // For demo purposes
+        status: 'open',
+      });
       navigate('/jobs');
     } catch (error) {
       console.error('Error creating job:', error);
@@ -157,21 +148,15 @@ const CreateJob: React.FC = () => {
 
         <button
           type="submit"
-          disabled={loading || !account}
+          disabled={loading}
           className={`w-full py-3 px-4 rounded-lg font-semibold text-white ${
-            loading || !account
+            loading
               ? 'bg-gray-400 cursor-not-allowed'
               : 'bg-primary-600 hover:bg-primary-700'
           }`}
         >
           {loading ? 'Creating Job...' : 'Create Job'}
         </button>
-
-        {!account && (
-          <p className="text-red-500 text-center">
-            Please connect your wallet to create a job
-          </p>
-        )}
       </form>
     </div>
   );
